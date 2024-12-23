@@ -1,4 +1,4 @@
-import { format, parse, differenceInMinutes } from 'date-fns';
+import { format, parse, differenceInMinutes, addMinutes } from 'date-fns';
 
 export const parseTimeLog = (timeLog: string): Date[] => {
   const times = timeLog
@@ -17,18 +17,25 @@ export const calculateRemainingTime = (times: Date[]): {
   remainingMinutes: number;
   status: 'incomplete' | 'overtime' | 'done';
   message: string;
+  clockOutTime?: string;
 } => {
   console.log('Calculating remaining time for:', times);
   
   if (times.length < 2) {
+    const lastTime = times[0];
+    const workMinutesNeeded = 8 * 60;
+    const clockOutTime = lastTime ? format(addMinutes(lastTime, workMinutesNeeded), 'h:mm:ss a') : null;
+    
     return {
       remainingMinutes: 8 * 60,
       status: 'incomplete',
-      message: 'Need at least one clock-in and clock-out time'
+      message: 'Need at least one clock-in and clock-out time',
+      clockOutTime: clockOutTime
     };
   }
 
   let totalMinutes = 0;
+  let lastClockIn = times[times.length - 1];
   
   for (let i = 0; i < times.length - 1; i += 2) {
     const clockIn = times[i];
@@ -45,11 +52,17 @@ export const calculateRemainingTime = (times: Date[]): {
   console.log('Total minutes worked:', totalMinutes);
   console.log('Remaining minutes:', remainingMinutes);
 
+  let clockOutTime = null;
+  if (lastClockIn && remainingMinutes > 0) {
+    clockOutTime = format(addMinutes(lastClockIn, remainingMinutes), 'h:mm:ss a');
+  }
+
   if (remainingMinutes > 0) {
     return {
       remainingMinutes,
       status: 'incomplete',
-      message: `You need to work ${Math.floor(remainingMinutes / 60)}h ${remainingMinutes % 60}m more`
+      message: `You need to work ${Math.floor(remainingMinutes / 60)}h ${remainingMinutes % 60}m more`,
+      clockOutTime
     };
   } else if (remainingMinutes === 0) {
     return {

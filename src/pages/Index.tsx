@@ -3,6 +3,7 @@ import { parseTimeLog, calculateRemainingTime } from '../utils/timeCalculator';
 import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
+import { Clock } from 'lucide-react';
 
 const Index = () => {
   const [timeLog, setTimeLog] = useState('');
@@ -10,6 +11,7 @@ const Index = () => {
     remainingMinutes: number;
     status: 'incomplete' | 'overtime' | 'done';
     message: string;
+    clockOutTime?: string;
   } | null>(null);
   const { toast } = useToast();
 
@@ -44,33 +46,47 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] p-4 md:p-8">
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-8 text-center text-4xl font-bold text-gray-900">
-          Work Hours Calculator
-        </h1>
+        <div className="mb-8 text-center">
+          <h1 className="mb-2 text-4xl font-bold text-gray-800">
+            Work Hours Calculator
+          </h1>
+          <p className="text-gray-600">Track your work hours and know exactly when to clock out</p>
+        </div>
         
         <div className="space-y-6">
-          <Card className="time-card">
-            <h2 className="mb-4 text-xl font-semibold text-gray-800">
-              Enter Clock In/Out Times
-            </h2>
+          <Card className="overflow-hidden rounded-xl border-0 bg-white/80 p-6 shadow-xl backdrop-blur-sm transition-all hover:shadow-2xl">
+            <div className="mb-4 flex items-center gap-2">
+              <Clock className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Enter Clock In/Out Times
+              </h2>
+            </div>
             <Textarea
               value={timeLog}
               onChange={(e) => handleTimeLogChange(e.target.value)}
               placeholder="Enter times in format:&#10;10:18:37 AM&#10;1:39:14 PM&#10;2:18:42 PM&#10;MISSING"
-              className="time-input"
+              className="min-h-[200px] w-full rounded-lg border border-gray-200 bg-white/50 p-4 font-mono text-sm shadow-inner focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20"
             />
           </Card>
 
           {calculation && (
-            <Card className="time-card animate-fade">
+            <Card className="overflow-hidden rounded-xl border-0 bg-white/80 p-6 shadow-xl backdrop-blur-sm transition-all hover:shadow-2xl">
               <h2 className="mb-4 text-xl font-semibold text-gray-800">
                 Calculation Result
               </h2>
-              <p className={`result-text ${getStatusColor(calculation.status)}`}>
-                {calculation.message}
-              </p>
+              <div className="space-y-3">
+                <p className={`text-lg font-medium ${getStatusColor(calculation.status)}`}>
+                  {calculation.message}
+                </p>
+                {calculation.clockOutTime && (
+                  <p className="mt-2 rounded-lg bg-blue-50 p-3 text-blue-700">
+                    <span className="font-semibold">Recommended Clock Out Time:</span>{' '}
+                    {calculation.clockOutTime}
+                  </p>
+                )}
+              </div>
             </Card>
           )}
         </div>
