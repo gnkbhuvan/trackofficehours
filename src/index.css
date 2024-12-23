@@ -37,15 +37,15 @@
 }
 
 .time-input {
-  @apply min-h-[200px] w-full rounded-lg border border-gray-200 p-4 font-mono text-sm shadow-sm focus:border-primary focus:ring-1 focus:ring-primary;
+  @apply min-h-[200px] w-full rounded-lg border-0 bg-[#F1F0FB] p-6 font-mono text-sm shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] focus:border-0 focus:ring-0;
 }
 
 .time-card {
-  @apply overflow-hidden rounded-xl border bg-card p-6 shadow-lg transition-all hover:shadow-xl;
+  @apply overflow-hidden rounded-xl border-0 bg-[#F1F0FB] p-8 shadow-[20px_20px_60px_#cdccd5,-20px_-20px_60px_#ffffff] transition-all;
 }
 
 .result-text {
-  @apply text-lg font-semibold;
+  @apply text-lg font-medium;
 }
 
 .animate-fade {
