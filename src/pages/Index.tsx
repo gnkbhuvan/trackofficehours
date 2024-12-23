@@ -52,11 +52,13 @@ const Index = () => {
           <h1 className="mb-2 text-4xl font-bold text-[#222222] drop-shadow-sm">
             Work Hours Calculator
           </h1>
-          <p className="text-[#555555]">Track your work hours and know exactly when to clock out</p>
+          <p className="text-[#555555] font-['Inter'] text-lg">
+            Track your work hours and know exactly when to clock out
+          </p>
         </div>
         
         <div className="space-y-6">
-          <Card className="overflow-hidden rounded-xl border-0 bg-[#F1F0FB] p-8 shadow-[20px_20px_60px_#cdccd5,-20px_-20px_60px_#ffffff] transition-all">
+          <Card className="time-card">
             <div className="mb-4 flex items-center gap-2">
               <Clock className="h-5 w-5 text-[#8E9196]" />
               <h2 className="text-xl font-semibold text-[#222222]">
@@ -67,17 +69,17 @@ const Index = () => {
               value={timeLog}
               onChange={(e) => handleTimeLogChange(e.target.value)}
               placeholder="Enter times in format:&#10;10:18:37 AM&#10;1:39:14 PM&#10;2:18:42 PM&#10;MISSING"
-              className="min-h-[200px] w-full rounded-lg border-0 bg-[#F1F0FB] p-6 font-mono text-sm shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] focus:border-0 focus:ring-0"
+              className="time-input"
             />
           </Card>
 
           {calculation && (
-            <Card className="overflow-hidden rounded-xl border-0 bg-[#F1F0FB] p-8 shadow-[20px_20px_60px_#cdccd5,-20px_-20px_60px_#ffffff] transition-all">
+            <Card className="time-card">
               <h2 className="mb-4 text-xl font-semibold text-[#222222]">
                 Calculation Result
               </h2>
               <div className="space-y-4">
-                <p className={`rounded-lg bg-[#F1F0FB] p-6 text-lg font-medium shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] ${getStatusColor(calculation.status)}`}>
+                <p className={`rounded-lg bg-[#F1F0FB] p-6 font-['Inter'] text-lg font-medium shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] ${getStatusColor(calculation.status)}`}>
                   {calculation.message}
                 </p>
                 {calculation.clockOutTime && (

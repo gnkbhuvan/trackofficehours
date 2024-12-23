@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,12 +34,15 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-['Inter'];
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-['Poppins'];
   }
 }
 
 .time-input {
-  @apply min-h-[200px] w-full rounded-lg border-0 bg-[#F1F0FB] p-6 font-mono text-sm shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] focus:border-0 focus:ring-0;
+  @apply min-h-[200px] w-full rounded-lg border-0 bg-[#F1F0FB] p-6 font-['Inter'] text-sm shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] focus:border-0 focus:ring-0;
 }
 
 .time-card {
@@ -45,7 +50,7 @@
 }
 
 .result-text {
-  @apply text-lg font-medium;
+  @apply text-lg font-medium font-['Inter'];
 }
 
 .animate-fade {
