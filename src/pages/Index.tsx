@@ -35,33 +35,35 @@ const Index = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'incomplete':
-        return 'text-[#8E9196]';
+        return 'text-black';
       case 'overtime':
-        return 'text-[#FEC6A1]';
+        return 'text-[#FF0000]';
       case 'done':
-        return 'text-[#F2FCE2]';
+        return 'text-[#0000FF]';
       default:
-        return 'text-[#8E9196]';
+        return 'text-black';
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#F1F0FB] p-4 md:p-8">
+    <div className="min-h-screen bg-white p-4 md:p-8">
       <div className="mx-auto max-w-2xl">
-        <div className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold text-[#222222] drop-shadow-sm">
-            Work Hours Calculator
-          </h1>
-          <p className="text-[#555555] font-['Inter'] text-lg">
-            Track your work hours and know exactly when to clock out
-          </p>
+        <div className="mb-12 text-center">
+          <div className="bauhaus-pattern">
+            <h1 className="mb-4 text-5xl font-bold text-black">
+              Work Hours Calculator
+            </h1>
+            <p className="text-[#333333] font-['Inter'] text-xl">
+              Track your work hours and know exactly when to clock out
+            </p>
+          </div>
         </div>
         
-        <div className="space-y-6">
+        <div className="space-y-8">
           <Card className="time-card">
-            <div className="mb-4 flex items-center gap-2">
-              <Clock className="h-5 w-5 text-[#8E9196]" />
-              <h2 className="text-xl font-semibold text-[#222222]">
+            <div className="mb-6 flex items-center gap-3">
+              <Clock className="h-6 w-6 text-black" />
+              <h2 className="text-2xl font-semibold text-black">
                 Enter Clock In/Out Times
               </h2>
             </div>
@@ -75,17 +77,17 @@ const Index = () => {
 
           {calculation && (
             <Card className="time-card">
-              <h2 className="mb-4 text-xl font-semibold text-[#222222]">
+              <h2 className="mb-6 text-2xl font-semibold text-black">
                 Calculation Result
               </h2>
-              <div className="space-y-4">
-                <p className={`rounded-lg bg-[#F1F0FB] p-6 font-['Inter'] text-lg font-medium shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] ${getStatusColor(calculation.status)}`}>
+              <div className="space-y-6">
+                <p className={`border-2 border-black bg-white p-6 font-['Inter'] text-xl ${getStatusColor(calculation.status)}`}>
                   {calculation.message}
                 </p>
                 {calculation.clockOutTime && (
-                  <div className="mt-4 rounded-lg bg-[#F1F0FB] p-6 shadow-[8px_8px_16px_#cdccd5,-8px_-8px_16px_#ffffff]">
-                    <span className="block text-lg font-semibold text-[#222222]">Recommended Clock Out Time:</span>
-                    <span className="mt-2 block text-2xl font-bold text-[#8E9196]">
+                  <div className="border-2 border-black bg-white p-6">
+                    <span className="block text-xl font-semibold text-black">Recommended Clock Out Time:</span>
+                    <span className="mt-2 block text-3xl font-bold text-[#0000FF]">
                       {calculation.clockOutTime}
                     </span>
                   </div>

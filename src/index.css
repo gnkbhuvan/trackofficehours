@@ -25,7 +25,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    --radius: 0;
   }
 }
 
@@ -34,23 +34,37 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-['Inter'];
+    @apply bg-white text-black font-['Inter'];
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-['Poppins'];
+    @apply font-['Poppins'] tracking-tight;
   }
 }
 
 .time-input {
-  @apply min-h-[200px] w-full rounded-lg border-0 bg-[#F1F0FB] p-6 font-['Inter'] text-sm shadow-[inset_8px_8px_16px_#cdccd5,inset_-8px_-8px_16px_#ffffff] focus:border-0 focus:ring-0;
+  @apply min-h-[200px] w-full border-2 border-black bg-white p-6 font-['Inter'] text-sm focus:border-[#0000FF] focus:ring-0;
 }
 
 .time-card {
-  @apply overflow-hidden rounded-xl border-0 bg-[#F1F0FB] p-8 shadow-[20px_20px_60px_#cdccd5,-20px_-20px_60px_#ffffff] transition-all;
+  @apply relative border-2 border-black bg-white p-8 transition-all before:absolute before:left-0 before:top-0 before:h-2 before:w-full before:bg-[#FF0000];
 }
 
 .result-text {
   @apply text-lg font-medium font-['Inter'];
+}
+
+.bauhaus-pattern {
+  @apply relative overflow-hidden;
+}
+
+.bauhaus-pattern::before {
+  content: '';
+  @apply absolute -right-16 -top-16 h-32 w-32 rotate-45 bg-[#FFFF00] opacity-20;
+}
+
+.bauhaus-pattern::after {
+  content: '';
+  @apply absolute -bottom-8 -left-8 h-16 w-16 rounded-full bg-[#0000FF] opacity-20;
 }
 
 .animate-fade {
