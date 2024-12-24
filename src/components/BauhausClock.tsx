@@ -1,15 +1,23 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const BauhausClock = () => {
-  const clockRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const hourHandRef = useRef<THREE.Mesh>(null);
   const minuteHandRef = useRef<THREE.Mesh>(null);
 
+  useEffect(() => {
+    if (groupRef.current) {
+      groupRef.current.rotation.x = 0;
+      groupRef.current.rotation.y = 0;
+      groupRef.current.rotation.z = 0;
+    }
+  }, []);
+
   useFrame(({ clock }) => {
-    if (clockRef.current) {
-      clockRef.current.rotation.y += 0.005;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += 0.005;
     }
     
     if (hourHandRef.current && minuteHandRef.current) {
@@ -20,14 +28,12 @@ const BauhausClock = () => {
   });
 
   return (
-    <group ref={clockRef}>
-      {/* Clock face */}
+    <group ref={groupRef}>
       <mesh>
         <cylinderGeometry args={[2, 2, 0.2, 32]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Hour markers */}
       {Array.from({ length: 12 }).map((_, i) => (
         <mesh
           key={i}
@@ -42,13 +48,11 @@ const BauhausClock = () => {
         </mesh>
       ))}
 
-      {/* Hour hand */}
       <mesh ref={hourHandRef} position={[0, 0, 0.3]}>
         <boxGeometry args={[0.2, 1.2, 0.1]} />
         <meshStandardMaterial color="#FF0000" />
       </mesh>
 
-      {/* Minute hand */}
       <mesh ref={minuteHandRef} position={[0, 0, 0.4]}>
         <boxGeometry args={[0.1, 1.5, 0.1]} />
         <meshStandardMaterial color="#FFFF00" />
