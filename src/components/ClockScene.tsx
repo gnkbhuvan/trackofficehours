@@ -24,6 +24,14 @@ const ClockScene = () => {
     });
   };
 
+  if (!mounted) {
+    return (
+      <div className="h-[300px] w-full rounded-lg border-2 border-black bg-white flex items-center justify-center">
+        <p>Loading 3D scene...</p>
+      </div>
+    );
+  }
+
   if (hasError) {
     return (
       <div className="h-[300px] w-full rounded-lg border-2 border-black bg-white flex items-center justify-center">
@@ -31,8 +39,6 @@ const ClockScene = () => {
       </div>
     );
   }
-
-  if (!mounted) return null;
 
   return (
     <div className="h-[300px] w-full rounded-lg border-2 border-black bg-white">
@@ -50,15 +56,38 @@ const ClockScene = () => {
           gl.setClearColor('#ffffff', 0);
         }}
       >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
-          <BauhausClock />
-          <OrbitControls enableZoom={false} />
-        </Suspense>
+        <ErrorBoundary fallback={<FallbackContent />}>
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={1} />
+            <BauhausClock />
+            <OrbitControls enableZoom={false} />
+          </Suspense>
+        </ErrorBoundary>
       </Canvas>
     </div>
   );
 };
+
+// Simple error boundary component
+const ErrorBoundary = ({ children, fallback }: { children: React.ReactNode; fallback: React.ReactNode }) => {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const handleError = () => setHasError(true);
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
+
+  if (hasError) return <>{fallback}</>;
+  return <>{children}</>;
+};
+
+const FallbackContent = () => (
+  <mesh>
+    <boxGeometry args={[1, 1, 1]} />
+    <meshStandardMaterial color="red" />
+  </mesh>
+);
 
 export default ClockScene;
