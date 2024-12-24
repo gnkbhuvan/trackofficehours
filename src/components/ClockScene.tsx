@@ -1,12 +1,18 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import BauhausClock from './BauhausClock';
 import { useToast } from '@/components/ui/use-toast';
 
 const ClockScene = () => {
   const { toast } = useToast();
   const [hasError, setHasError] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const handleError = (error: any) => {
     console.error('Three.js Error:', error);
@@ -26,6 +32,8 @@ const ClockScene = () => {
     );
   }
 
+  if (!mounted) return null;
+
   return (
     <div className="h-[300px] w-full rounded-lg border-2 border-black bg-white">
       <Canvas
@@ -34,7 +42,8 @@ const ClockScene = () => {
         gl={{ 
           antialias: true,
           alpha: true,
-          preserveDrawingBuffer: true
+          preserveDrawingBuffer: true,
+          powerPreference: "high-performance"
         }}
         onError={handleError}
         onCreated={({ gl }) => {

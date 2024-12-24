@@ -13,12 +13,19 @@ const BauhausClock = () => {
       groupRef.current.rotation.y = 0;
       groupRef.current.rotation.z = 0;
     }
+
+    return () => {
+      // Cleanup
+      if (groupRef.current) {
+        groupRef.current.clear();
+      }
+    };
   }, []);
 
   useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += 0.005;
-    }
+    if (!groupRef.current) return;
+    
+    groupRef.current.rotation.y += 0.005;
     
     if (hourHandRef.current && minuteHandRef.current) {
       const time = clock.getElapsedTime();
@@ -34,19 +41,23 @@ const BauhausClock = () => {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {Array.from({ length: 12 }).map((_, i) => (
-        <mesh
-          key={i}
-          position={[
-            Math.sin((i * Math.PI) / 6) * 1.7,
-            Math.cos((i * Math.PI) / 6) * 1.7,
-            0.2,
-          ]}
-        >
-          <boxGeometry args={[0.2, 0.4, 0.1]} />
-          <meshStandardMaterial color="#0000FF" />
-        </mesh>
-      ))}
+      {/* Hour markers */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const angle = (i * Math.PI) / 6;
+        return (
+          <mesh
+            key={i}
+            position={[
+              Math.sin(angle) * 1.7,
+              Math.cos(angle) * 1.7,
+              0.2,
+            ]}
+          >
+            <boxGeometry args={[0.2, 0.4, 0.1]} />
+            <meshStandardMaterial color="#0000FF" />
+          </mesh>
+        );
+      })}
 
       <mesh ref={hourHandRef} position={[0, 0, 0.3]}>
         <boxGeometry args={[0.2, 1.2, 0.1]} />
