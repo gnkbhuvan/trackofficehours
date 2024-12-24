@@ -22,7 +22,7 @@ const BauhausClock = () => {
   return (
     <group ref={clockRef}>
       {/* Clock face */}
-      <mesh position={[0, 0, 0]}>
+      <mesh>
         <cylinderGeometry args={[2, 2, 0.2, 32]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
