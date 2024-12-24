@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Cylinder, Box } from '@react-three/drei';
 import * as THREE from 'three';
 
 const BauhausClock = () => {
@@ -23,23 +22,24 @@ const BauhausClock = () => {
   return (
     <group ref={clockRef}>
       {/* Clock face */}
-      <Cylinder args={[2, 2, 0.2, 32]} position={[0, 0, 0]}>
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[2, 2, 0.2, 32]} />
         <meshStandardMaterial color="#ffffff" />
-      </Cylinder>
+      </mesh>
 
       {/* Hour markers */}
       {[...Array(12)].map((_, i) => (
-        <Box
+        <mesh
           key={i}
-          args={[0.2, 0.4, 0.1]}
           position={[
             Math.sin((i * Math.PI) / 6) * 1.7,
             Math.cos((i * Math.PI) / 6) * 1.7,
             0.2,
           ]}
         >
+          <boxGeometry args={[0.2, 0.4, 0.1]} />
           <meshStandardMaterial color="#0000FF" />
-        </Box>
+        </mesh>
       ))}
 
       {/* Hour hand */}
