@@ -17,13 +17,13 @@ const BauhausClock = () => {
   return (
     <group>
       {/* Clock face */}
-      <mesh>
+      <mesh position={[0, 0, 0]}>
         <cylinderGeometry args={[2, 2, 0.2, 32]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
       {/* Hour markers */}
-      {[...Array(12)].map((_, i) => (
+      {Array.from({ length: 12 }).map((_, i) => (
         <mesh
           key={i}
           position={[
