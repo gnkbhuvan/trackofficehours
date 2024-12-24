@@ -1,25 +1,12 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const BauhausClock = () => {
-  const clockRef = useRef<THREE.Group>(null);
   const hourHandRef = useRef<THREE.Mesh>(null);
   const minuteHandRef = useRef<THREE.Mesh>(null);
 
-  useEffect(() => {
-    if (clockRef.current) {
-      clockRef.current.rotation.set(0, 0, 0);
-    }
-  }, []);
-
   useFrame(({ clock }) => {
-    if (!clockRef.current) return;
-    
-    // Gentle rotation of the entire clock
-    clockRef.current.rotation.y += 0.005;
-    
-    // Update clock hands
     if (hourHandRef.current && minuteHandRef.current) {
       const time = clock.getElapsedTime();
       hourHandRef.current.rotation.z = -(time * 0.1) % (Math.PI * 2);
@@ -28,7 +15,7 @@ const BauhausClock = () => {
   });
 
   return (
-    <group ref={clockRef}>
+    <group>
       {/* Clock face */}
       <mesh>
         <cylinderGeometry args={[2, 2, 0.2, 32]} />
