@@ -28,7 +28,7 @@ const BauhausClock = () => {
       </mesh>
 
       {/* Hour markers */}
-      {[...Array(12)].map((_, i) => (
+      {Array.from({ length: 12 }).map((_, i) => (
         <mesh
           key={i}
           position={[

@@ -10,6 +10,9 @@ const ClockScene = () => {
         camera={{ position: [0, 0, 8], fov: 50 }}
         className="rounded-lg"
         gl={{ antialias: true }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#ffffff', 0);
+        }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
