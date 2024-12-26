@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Clock } from 'lucide-react';
-import ClockScene from '../components/ClockScene';
 
 const Index = () => {
   const [timeLog, setTimeLog] = useState('');
@@ -58,10 +57,6 @@ const Index = () => {
               Track your work hours and know exactly when to clock out
             </p>
           </div>
-        </div>
-
-        <div className="mb-8">
-          <ClockScene />
         </div>
         
         <div className="space-y-8">
