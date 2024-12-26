@@ -21,10 +21,12 @@ export const calculateRemainingTime = (times: Date[]): {
 } => {
   console.log('Calculating remaining time for:', times);
   
+  const now = new Date();
+  
   if (times.length < 2) {
-    const lastTime = times[0];
+    const lastTime = times[0] || now;
     const workMinutesNeeded = 8 * 60;
-    const clockOutTime = lastTime ? format(addMinutes(lastTime, workMinutesNeeded), 'h:mm:ss a') : null;
+    const clockOutTime = format(addMinutes(lastTime, workMinutesNeeded), 'h:mm:ss a');
     
     return {
       remainingMinutes: 8 * 60,
@@ -54,14 +56,27 @@ export const calculateRemainingTime = (times: Date[]): {
 
   let clockOutTime = null;
   if (lastClockIn && remainingMinutes > 0) {
-    clockOutTime = format(addMinutes(lastClockIn, remainingMinutes), 'h:mm:ss a');
+    const suggestedClockOut = addMinutes(lastClockIn, remainingMinutes);
+    const currentTime = new Date();
+    
+    // If suggested clock out is earlier than current time, calculate from current time
+    if (suggestedClockOut < currentTime) {
+      clockOutTime = format(addMinutes(currentTime, remainingMinutes), 'h:mm:ss a');
+      console.log('Calculating from current time:', clockOutTime);
+    } else {
+      clockOutTime = format(suggestedClockOut, 'h:mm:ss a');
+      console.log('Using suggested clock out time:', clockOutTime);
+    }
   }
 
   if (remainingMinutes > 0) {
+    const hours = Math.floor(remainingMinutes / 60);
+    const minutes = remainingMinutes % 60;
+    const fromNow = format(addMinutes(now, remainingMinutes), 'h:mm:ss a');
     return {
       remainingMinutes,
       status: 'incomplete',
-      message: `You need to work ${Math.floor(remainingMinutes / 60)}h ${remainingMinutes % 60}m more`,
+      message: `You need to work ${hours}h ${minutes}m more (until ${fromNow})`,
       clockOutTime
     };
   } else if (remainingMinutes === 0) {
@@ -71,10 +86,13 @@ export const calculateRemainingTime = (times: Date[]): {
       message: 'You have completed your 8 hours!'
     };
   } else {
+    const overtimeMinutes = Math.abs(remainingMinutes);
+    const hours = Math.floor(overtimeMinutes / 60);
+    const minutes = overtimeMinutes % 60;
     return {
       remainingMinutes: Math.abs(remainingMinutes),
       status: 'overtime',
-      message: `You are in overtime by ${Math.floor(Math.abs(remainingMinutes) / 60)}h ${Math.abs(remainingMinutes) % 60}m`
+      message: `You are in overtime by ${hours}h ${minutes}m`
     };
   }
 };
