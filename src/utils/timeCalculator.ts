@@ -21,21 +21,24 @@ export const calculateRemainingTime = (times: Date[]): {
 } => {
   console.log('Calculating remaining time for:', times);
   
+  // Get current time in IST
+  const currentDate = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+  const currentTimeIST = new Date(currentDate.getTime() + istOffset);
+  
   if (times.length < 2) {
-    const lastTime = times[0];
     const workMinutesNeeded = 8 * 60;
-    const clockOutTime = lastTime ? format(addMinutes(lastTime, workMinutesNeeded), 'h:mm:ss a') : null;
+    const clockOutTime = format(addMinutes(currentTimeIST, workMinutesNeeded), 'h:mm:ss a');
     
     return {
-      remainingMinutes: 8 * 60,
+      remainingMinutes: workMinutesNeeded,
       status: 'incomplete',
       message: 'Need at least one clock-in and clock-out time',
-      clockOutTime: clockOutTime
+      clockOutTime
     };
   }
 
   let totalMinutes = 0;
-  let lastClockIn = times[times.length - 1];
   
   for (let i = 0; i < times.length - 1; i += 2) {
     const clockIn = times[i];
@@ -53,8 +56,8 @@ export const calculateRemainingTime = (times: Date[]): {
   console.log('Remaining minutes:', remainingMinutes);
 
   let clockOutTime = null;
-  if (lastClockIn && remainingMinutes > 0) {
-    clockOutTime = format(addMinutes(lastClockIn, remainingMinutes), 'h:mm:ss a');
+  if (remainingMinutes > 0) {
+    clockOutTime = format(addMinutes(currentTimeIST, remainingMinutes), 'h:mm:ss a');
   }
 
   if (remainingMinutes > 0) {
